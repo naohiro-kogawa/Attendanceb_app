@@ -3,6 +3,25 @@
 
 <div class="col-md-10 col-md-offset-1">
   <%= will_paginate %>
+  
+     <!--  検索拡張機能  -->
+<div class="pull-right">
+  <div class="input-group">
+    <div class="form-group room-in ">
+    <p>ユーザー名検索</p>
+      <form action="/users" accept-charset="UTF-8" method="get"><input name="utf8" type="hidden" value="✓">
+        <div class="input-group">
+          <input type="text" name="search" id="search" placeholder="キーワードを入力..." class="form-control">
+          <span class="input-group-btn">
+            <button type="submit" class="btn btn-primary">検索</button>
+          </span>
+        </div>
+     </form>    
+      </div>
+  </div>
+</div>
+  
+  
   <table class="table table-condensed table-hover" id="table-users">
     <thead>
       <tr>
