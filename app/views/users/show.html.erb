@@ -3,7 +3,7 @@
   <table class="table table-bordered table-condensed user-table">
     <tr>
       <td><%= link_to "◀◀︎", user_path(date: @first_day.prev_month) %>
-          【<%= l(@first_day, format: :middle) %>】勤怠管理表
+          【<%= l(@first_day, format: :middle) %>】時間管理表
           <%= link_to "▶▶︎︎", user_path(date: @first_day.next_month) %>
       </td>
       <td>名前</td>
@@ -67,9 +67,9 @@
               <%= link_to "#{btn_text}登録", user_attendance_path(@user, day), method: :patch, class: "btn btn-primary btn-attendance" %>
             <% end %>
           </td>
-          <td><%= l(day.started_at, format: :time) if day.started_at.present? %></td>
+          <td><%= day.started_at.strftime('%H') if day.started_at.present? %></td>
+          <td><%= day.started_at.strftime('%M') if day.started_at.present? %></td>
           <td><%= l(day.finished_at, format: :time) if day.finished_at.present? %></td>
-          <td></td>
           <td></td>
           <td></td>
           <td>
