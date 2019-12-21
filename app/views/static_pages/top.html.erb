@@ -6,7 +6,7 @@
        <% if logged_in? %>
           <%= f.submit "ログイン状態です", class: "btn btn-lg btn-primary", disabled: "disabled" %>
        <% else %>
-          <%= f.submit "ログイン", class: "btn btn-lg btn-primary" %>
+          <%= link_to "ログイン", login_path , class: "btn btn-lg btn-primary" %>
         <% end %>
      <% end %>    
     <p>
