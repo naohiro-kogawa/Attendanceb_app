@@ -21,19 +21,19 @@ module AttendancesHelper
    # 3. （2の条件式がfalseだった場合）出勤時間が退勤時間より大きい場合（出勤時間が退社時間より後の時間）
    # attendances_invalid?メソッドは繰り返し処理を終了し、falseを返す
    
-  def attendances_invalid?
-    attendances = true
-    attendances_params.each do |id, item|
-      if item[:started_at].blank? && item[:finished_at].blank?
-        next
-      elsif item[:started_at].blank? || item[:finished_at].blank?
-        attendances = false
-        break
-      elsif item[:started_at] > item[:finished_at]
-        attendances = false
-        break
-      end
-    end
-    return attendances
-  end
+  # def attendances_invalid?
+  #   attendances = true
+  #   attendances_params.each do |id, item|
+  #     if item[:started_at].blank? && item[:finished_at].blank?
+  #       next
+  #     elsif item[:started_at].blank? || item[:finished_at].blank?
+  #       attendances = false
+  #       break
+  #     elsif item[:started_at] > item[:finished_at]
+  #       attendances = false
+  #       break
+  #     end
+  #   end
+  #   return attendances
+  # end
 end
