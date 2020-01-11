@@ -37,6 +37,8 @@ class AttendancesController < ApplicationController
           attendance.update_attributes!(item)
         elsif (item[:started_at].blank? || item[:finished_at].blank?) || (item[:started_at] > item[:finished_at])
           raise "出勤と退勤の値が不正です。"
+        elsif (Time.now > item[:finished_at].in_time_zone)  
+          raise "退勤時間が未来の時間です。"
         else
           attendance.update_attributes!(item)
         end
