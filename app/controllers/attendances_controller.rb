@@ -11,13 +11,13 @@ class AttendancesController < ApplicationController
     @attendance = Attendance.find(params[:id])
     # 出勤時間が未登録であることを判定します。
     if @attendance.started_at.nil?
-      if @attendance.update_attributes(started_at: Time.current.change(sec: 0))# 15分刻みで切り捨て
+      if @attendance.update_attributes(started_at: Time.current.change(sec: 0))
         flash[:info] = "おはようございます！"
       else
         flash[:danger] = UPDATE_ERROR_MSG
       end
     elsif @attendance.finished_at.nil?
-      if @attendance.update_attributes(finished_at: Time.current.change(sec: 0))# 15分刻みで切り捨て
+      if @attendance.update_attributes(finished_at: Time.current.change(sec: 0))
         flash[:info] = "お疲れ様でした。"
       else
         flash[:danger] = UPDATE_ERROR_MSG
@@ -33,7 +33,13 @@ class AttendancesController < ApplicationController
     ActiveRecord::Base.transaction do # トランザクションを開始します。
       attendances_params.each do |id, item|
         attendance = Attendance.find(id)
-        attendance.update_attributes!(item)
+        if item[:started_at].blank? && item[:finished_at].blank?
+          attendance.update_attributes!(item)
+        elsif (item[:started_at].blank? || item[:finished_at].blank?) || (item[:started_at] > item[:finished_at])
+          raise "出勤と退勤の値が不正です。"
+        else
+          attendance.update_attributes!(item)
+        end
       end
     end
     flash[:success] = "1ヶ月分の勤怠情報を更新しました。"
@@ -41,8 +47,10 @@ class AttendancesController < ApplicationController
   rescue ActiveRecord::RecordInvalid # トランザクションによるエラーの分岐です。
     flash[:danger] = "無効な入力データがあった為、更新をキャンセルしました。"
     redirect_to attendances_edit_one_month_user_url(date: params[:date])
+  rescue => error
+    flash[:danger] = error
+    redirect_to attendances_edit_one_month_user_url(date: params[:date])
   end
-
   private
 
     # 1ヶ月分の勤怠情報を扱います。
